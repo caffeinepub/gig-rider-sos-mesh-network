@@ -1,0 +1,71 @@
+{
+  "kind": "implementation_plan",
+  "version": "1.0",
+  "title": "Attach and stabilize crash/impact detection UI + Settings sensitivity control",
+  "requirements": [
+    {
+      "id": "REQ-22",
+      "summary": "Render CrashPromptDialog globally so crash prompts can appear from any page when crash detection is enabled.",
+      "acceptanceCriteria": [
+        "With Crash Detection enabled in Settings and motion permission granted, a simulated/high-acceleration devicemotion event causes the 'Possible Impact Detected' dialog to appear without requiring navigation to a specific page.",
+        "The crash prompt can appear while the user is on Home, Hazards, Contacts, or Settings pages.",
+        "If Crash Detection is disabled, no crash prompt appears even when devicemotion events fire."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/components/Layout.tsx",
+          "operation": "modify",
+          "description": "Import and render the existing CrashPromptDialog at the app-shell level (inside Layout) so it is mounted regardless of the current route and can open from any page."
+        },
+        {
+          "path": "frontend/src/features/sensors/CrashPromptDialog.tsx",
+          "operation": "modify",
+          "description": "Harden dialog trigger behavior for global mounting (e.g., ignore new triggers while already open) so a single detected impact results in a single visible prompt across the app."
+        }
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "summary": "Make crash detection reliable: only listen when enabled and motion permission is granted/available, reduce false positives via confirmation window/smoothing, and add a cooldown to prevent repeated triggers.",
+      "acceptanceCriteria": [
+        "On devices/browsers where motion permission is required but not granted, crash detection does not start listening and does not trigger prompts.",
+        "When a crash event is detected and the dialog opens, additional devicemotion spikes during the next cooldown period do not open additional dialogs or re-trigger the callback.",
+        "Normal riding-like bumps/shakes do not continuously open the crash prompt under default settings; triggering requires a clear threshold exceedance pattern.",
+        "Crash detection continues to work after dismissing the dialog ('I'm OK') and can trigger again after the cooldown has elapsed."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/features/sensors/useCrashDetection.ts",
+          "operation": "modify",
+          "description": "Update useCrashDetection to: (a) gate event listening on settings.crashDetectionEnabled AND motion permission being granted/available (integrate with existing motion permission detection logic), (b) reduce false positives using a short confirmation window (e.g., require multiple threshold exceedances within N samples and/or simple smoothing of g-force), and (c) add a cooldown timer so onCrashDetected cannot fire repeatedly while the device is still moving."
+        },
+        {
+          "path": "frontend/src/features/permissions/usePermissionStatus.ts",
+          "operation": "modify",
+          "description": "Adjust/extend motion permission state reporting as needed so useCrashDetection can reliably determine when motion permission is actually granted vs. prompt/denied/unsupported (without forcing permission prompts)."
+        }
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "summary": "Add a crash sensitivity (threshold) control to Settings to tune settings.crashThreshold with clear English helper text and a safe default range.",
+      "acceptanceCriteria": [
+        "Settings includes a control to view and adjust the crash threshold used for detection (persisted via the existing settings store).",
+        "Changing the threshold immediately affects subsequent crash detection behavior without requiring a page refresh.",
+        "All user-facing labels and helper text related to crash threshold are in English."
+      ],
+      "file_operations": [
+        {
+          "path": "frontend/src/pages/SettingsPage.tsx",
+          "operation": "modify",
+          "description": "Add a Crash Sensitivity / Threshold control in the Safety Sensors section bound to settings.crashThreshold (e.g., range slider or select) with English helper text explaining higher vs lower sensitivity, show current value, and enforce a safe range (e.g., ~1.5g–5.0g). Ensure changes call updateSettings and take effect immediately."
+        },
+        {
+          "path": "frontend/src/state/settingsStore.ts",
+          "operation": "modify",
+          "description": "Ensure settings.crashThreshold has appropriate default and is persisted; optionally clamp/validate crashThreshold updates to the safe range used by the Settings control so invalid values cannot be stored."
+        }
+      ]
+    }
+  ]
+}

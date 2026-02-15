@@ -1,0 +1,64 @@
+{
+  "kind": "feature_evidence_report",
+  "features": [
+    {
+      "featureId": "feature-attach-the-existing-crash-impact-detection-ui-so-it-is-always-active-when-enabled-render-the-existing-crashpromptdialog-globally-e-g-inside-the-app-shell-layout-so-a-detected-impact-can-actually-open-the-prompt-from-any-page",
+      "featureTitle": "Attach the existing crash/impact detection UI so it is always active when enabled: render the existing `CrashPromptDialog` globally (e.g., inside the app shell/layout) so a detected impact can actually open the prompt from any page.",
+      "files": [
+        "frontend/src/components/Layout.tsx",
+        "frontend/src/features/sensors/CrashPromptDialog.tsx"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-22"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-correct-the-crash-detection-implementation-to-behave-reliably-and-not-spam-trigger-update-usecrashdetection-to-a-only-listen-when-crash-detection-is-enabled-and-motion-permission-is-granted-available-b-reduce-false-positives-by-using-a-short-confirmation-window-e-g-require-threshold-exceedance-across-multiple-samples-or-apply-simple-smoothing-and-c-add-a-cooldown-so-oncrashdetected-cannot-fire-repeatedly-in-rapid-succession-while-the-device-is-still-moving",
+      "featureTitle": "Correct the crash detection implementation to behave reliably and not spam-trigger: update `useCrashDetection` to (a) only listen when crash detection is enabled and motion permission is granted/available, (b) reduce false positives by using a short confirmation window (e.g., require threshold exceedance across multiple samples or apply simple smoothing), and (c) add a cooldown so `onCrashDetected()` cannot fire repeatedly in rapid succession while the device is still moving.",
+      "files": [
+        "frontend/src/features/sensors/useCrashDetection.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-23"
+      ],
+      "confidence": "high"
+    },
+    {
+      "featureId": "feature-expose-crash-detection-sensitivity-control-in-settings-so-users-can-tune-the-crash-threshold-that-usecrashdetection-already-consumes-settings-crashthreshold-include-clear-english-helper-text-and-a-safe-default-range",
+      "featureTitle": "Expose crash detection sensitivity control in Settings so users can tune the crash threshold that `useCrashDetection` already consumes (`settings.crashThreshold`). Include clear English helper text and a safe default range.",
+      "files": [
+        "frontend/src/pages/SettingsPage.tsx",
+        "frontend/src/state/settingsStore.ts"
+      ],
+      "components": [
+        "authorization@4.0.0",
+        "core-infrastructure@1.0.2",
+        "shadcn-ui@1.0.0",
+        "build-template-react@1.0.0",
+        "initial-app@1.0.0",
+        "github-export-icp-cli@1.0.0"
+      ],
+      "testIds": [
+        "REQ-24"
+      ],
+      "confidence": "high"
+    }
+  ]
+}

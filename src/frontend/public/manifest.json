@@ -1,0 +1,18 @@
+{
+  "name": "Rider SOS Network",
+  "short_name": "Rider SOS",
+  "description": "Offline-first emergency SOS and hazard reporting for delivery riders",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0a0a0a",
+  "theme_color": "#dc2626",
+  "orientation": "portrait",
+  "icons": [
+    {
+      "src": "/assets/generated/sos-shield.dim_256x256.png",
+      "sizes": "256x256",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

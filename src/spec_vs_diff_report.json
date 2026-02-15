@@ -1,0 +1,40 @@
+{
+  "kind": "spec_vs_diff_report",
+  "version": "1.0",
+  "generatedAt": "2026-02-15T09:51:45.560Z",
+  "summary": "REQ-22/23/24 appear implemented: CrashPromptDialog is now globally mounted in the app Layout; useCrashDetection is permission- and setting-gated with a confirmation window and cooldown; Settings store and page wiring show crashThreshold support with a clamped safe range. Some additional Settings/UI behavior was introduced that was not requested (platform limitations copy, cache clear, threshold clamping).",
+  "missing_requirements": [],
+  "hallucinated_features": [
+    {
+      "description": "Added a general \"Platform Limitations\" disclaimer block in Settings with multiple bullet points unrelated to crash detection attachment/fix/sensitivity.",
+      "reason": "BuildRequest focuses on attaching crash prompt globally, improving crash detection behavior, and adding a crash threshold sensitivity control; it does not request new platform limitation messaging.",
+      "evidence": [
+        "frontend/src/pages/SettingsPage.tsx"
+      ]
+    },
+    {
+      "description": "Added a \"Clear cache\" action that clears localStorage/sessionStorage and shows a toast.",
+      "reason": "Not requested by REQ-22/23/24; could affect offline/settings behavior beyond the crash detection scope.",
+      "evidence": [
+        "frontend/src/pages/SettingsPage.tsx"
+      ]
+    },
+    {
+      "description": "Introduced clamping/validation logic for crashThreshold (1.5–5.0) inside the settings store updateSettings path.",
+      "reason": "REQ-24 asks for a sensitivity control and a safe default range in the UI, but does not explicitly request enforcing/clamping values at the store layer.",
+      "evidence": [
+        "frontend/src/state/settingsStore.ts"
+      ]
+    }
+  ],
+  "confidence": 0.74,
+  "changed_files": [
+    "frontend-file-summaries.txt",
+    "frontend/src/components/Layout.tsx",
+    "frontend/src/features/sensors/CrashPromptDialog.tsx",
+    "frontend/src/features/sensors/useCrashDetection.ts",
+    "frontend/src/pages/SettingsPage.tsx",
+    "frontend/src/state/settingsStore.ts",
+    "project_state.json"
+  ]
+}

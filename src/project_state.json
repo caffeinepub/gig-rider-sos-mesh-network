@@ -1,0 +1,266 @@
+{
+  "schemaVersion": "1.0.0",
+  "projectStateVersion": 11,
+  "summary": "Build a lightweight offline-first mobile SOS app for India’s gig delivery riders using a local mesh network (Bluetooth/Wi‑Fi Direct) to detect hazards/fatigue via phone sensors, share emergency alerts peer-to-peer within ~1 km, escalate to trusted contacts/authorities with breadcrumb tracking, and crowdsource hazard data.",
+  "architectural_notes": [
+    "Offline-first design targeting low/no-signal peri-urban environments",
+    "Use Bluetooth and/or Wi‑Fi Direct for peer-to-peer mesh alert propagation (~1 km target radius)",
+    "Leverage phone sensors (GPS, accelerometer) for on-device hazard/fatigue detection"
+  ],
+  "known_issues": [
+    "Emergency Contacts feature not working: unable to add/save contacts reliably.",
+    "SOS sharing between two phones (Bluetooth relay) not delivering; app gets stuck showing 'syncing'.",
+    "Bluetooth is not connecting between two mobile devices during the relay/share flow.",
+    "SOS message not sending/delivering between two mobile devices (peer-to-peer sharing failing).",
+    "Crash/impact detection feature needs to be attached/enabled and its implementation corrected (currently not working as intended)."
+  ],
+  "isFixRequest": true,
+  "existing_features": [
+    {
+      "id": "feature-create-a-lightweight-offline-first-sos-web-app-experience-for-gig-delivery-riders-that-works-reliably-in-low-no-connectivity-by-caching-the-shell-ui-and-queueing-user-actions-sos-events-hazard-reports-breadcrumb-points-locally-until-connectivity-is-restored",
+      "title": "Create a lightweight, offline-first SOS web app experience for gig delivery riders that works reliably in low/no connectivity by caching the shell UI and queueing user actions (SOS events, hazard reports, breadcrumb points) locally until connectivity is restored.",
+      "reqIds": [
+        "REQ-1"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-an-sos-flow-that-lets-a-rider-quickly-trigger-an-emergency-event-optionally-add-a-short-note-and-start-breadcrumb-tracking-display-the-sos-status-queued-sent-active-ended-and-provide-a-clear-end-sos-action",
+      "title": "Implement an SOS flow that lets a rider quickly trigger an emergency event, optionally add a short note, and start breadcrumb tracking; display the SOS status (queued/sent/active/ended) and provide a clear 'End SOS' action.",
+      "reqIds": [
+        "REQ-2"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-location-capture-using-the-browser-geolocation-api-for-breadcrumb-tracking-collect-location-points-at-a-configurable-interval-while-sos-is-active-show-the-last-known-location-on-the-ui-and-store-points-for-later-sync-when-offline",
+      "title": "Add location capture using the browser Geolocation API for breadcrumb tracking: collect location points at a configurable interval while SOS is active, show the last known location on the UI, and store points for later sync when offline.",
+      "reqIds": [
+        "REQ-3"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-basic-hazard-and-fatigue-detection-signals-from-available-web-accessible-sensors-a-motion-based-possible-crash-impact-detection-using-devicemotion-accelerometer-events-where-supported-and-b-simple-fatigue-prompts-based-on-session-duration-and-optional-self-checks-allow-users-to-enable-disable-these-detections-and-tune-sensitivity",
+      "title": "Implement basic hazard and fatigue detection signals from available web-accessible sensors: (a) motion-based 'possible crash/impact' detection using DeviceMotion/accelerometer events where supported, and (b) simple fatigue prompts based on session duration and optional self-checks; allow users to enable/disable these detections and tune sensitivity.",
+      "reqIds": [
+        "REQ-4"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-provide-an-emergency-contacts-feature-where-the-rider-can-manage-a-list-of-trusted-contacts-name-phone-email-as-freeform-text-relationship-and-generate-a-shareable-sos-status-page-link-containing-the-rider-s-sos-event-and-latest-breadcrumb-info-for-manual-escalation",
+      "title": "Provide an 'Emergency Contacts' feature where the rider can manage a list of trusted contacts (name + phone/email as freeform text + relationship), and generate a shareable SOS status page/link containing the rider’s SOS event and latest breadcrumb info for manual escalation.",
+      "reqIds": [
+        "REQ-5"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-implement-crowdsourced-hazard-reporting-allow-riders-to-submit-hazard-reports-type-severity-description-optional-photo-not-required-location-timestamp-and-view-nearby-recent-hazards-support-offline-submission-with-later-sync",
+      "title": "Implement crowdsourced hazard reporting: allow riders to submit hazard reports (type, severity, description, optional photo not required, location, timestamp) and view nearby recent hazards; support offline submission with later sync.",
+      "reqIds": [
+        "REQ-6"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-an-optional-sign-in-using-internet-identity-to-associate-data-with-a-rider-account-while-still-allowing-a-limited-guest-mode-for-immediate-sos-hazard-reporting-with-clear-ux-about-what-is-and-isn-t-persisted-synced",
+      "title": "Add an optional sign-in using Internet Identity to associate data with a rider account, while still allowing a limited 'guest mode' for immediate SOS/hazard reporting (with clear UX about what is and isn’t persisted/synced).",
+      "reqIds": [
+        "REQ-8"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-create-a-coherent-visual-theme-and-layout-for-the-safety-focused-rider-app-distinct-color-palette-not-based-on-blue-purple-including-an-always-available-prominent-sos-control-high-contrast-typography-and-clear-offline-online-status-indicators-applied-consistently-across-pages",
+      "title": "Create a coherent visual theme and layout for the safety-focused rider app (distinct color palette not based on blue/purple), including an always-available prominent SOS control, high-contrast typography, and clear offline/online status indicators applied consistently across pages.",
+      "reqIds": [
+        "REQ-9"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-basic-safety-privacy-settings-screen-location-permission-status-sensor-detection-toggles-data-retention-controls-e-g-clear-local-queued-data-and-an-explicit-disclaimer-that-the-web-app-cannot-guarantee-peer-to-peer-mesh-delivery-or-automatic-contacting-of-authorities",
+      "title": "Add a basic safety/privacy settings screen: location permission status, sensor detection toggles, data retention controls (e.g., clear local queued data), and an explicit disclaimer that the web app cannot guarantee peer-to-peer mesh delivery or automatic contacting of authorities.",
+      "reqIds": [
+        "REQ-10"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-end-to-end-sos-lifecycle-so-starting-an-sos-syncing-it-to-the-backend-sharing-a-status-link-adding-breadcrumbs-and-ending-the-sos-all-work-reliably-in-both-authenticated-and-guest-mode-including-after-page-refresh",
+      "title": "Fix end-to-end SOS lifecycle so starting an SOS, syncing it to the backend, sharing a status link, adding breadcrumbs, and ending the SOS all work reliably in both authenticated and guest mode (including after page refresh).",
+      "reqIds": [
+        "REQ-11"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-offline-sync-runner-status-reporting-and-queue-processing-so-the-connectivity-indicator-accurately-reflects-syncing-and-queued-items-and-queue-items-transition-through-statuses-predictably",
+      "title": "Fix offline sync runner status reporting and queue processing so the connectivity indicator accurately reflects syncing and queued items, and queue items transition through statuses predictably.",
+      "reqIds": [
+        "REQ-13"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-bluetooth-based-nearby-message-relay-feature-best-effort-that-allows-a-user-to-connect-to-a-nearby-device-using-the-web-bluetooth-api-where-supported-and-exchange-small-sos-hazard-text-payloads-include-clear-ux-when-bluetooth-is-unsupported-or-permission-is-denied",
+      "title": "Add a Bluetooth-based nearby message relay feature (best-effort) that allows a user to connect to a nearby device using the Web Bluetooth API (where supported) and exchange small SOS/hazard text payloads; include clear UX when Bluetooth is unsupported or permission is denied.",
+      "reqIds": [
+        "REQ-14"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-the-emergency-contacts-page-dialog-open-close-logic-so-the-add-contact-and-edit-dialogs-can-be-opened-reliably-and-do-not-immediately-close-due-to-an-incorrect-onopenchange-handler",
+      "title": "Fix the Emergency Contacts page dialog open/close logic so the 'Add Contact' and 'Edit' dialogs can be opened reliably and do not immediately close due to an incorrect onOpenChange handler.",
+      "reqIds": [
+        "REQ-15"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-make-emergency-contacts-saving-work-reliably-in-both-guest-mode-local-persisted-storage-and-authenticated-mode-backend-including-clear-error-handling-if-a-backend-save-fails",
+      "title": "Make Emergency Contacts saving work reliably in both guest mode (local persisted storage) and authenticated mode (backend), including clear error handling if a backend save fails.",
+      "reqIds": [
+        "REQ-16"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-prevent-sos-from-remaining-stuck-in-a-perpetual-syncing-state-when-the-user-is-not-authenticated-and-backend-calls-will-be-rejected-ensure-the-sos-status-messaging-is-accurate-in-guest-mode",
+      "title": "Prevent SOS from remaining stuck in a perpetual 'syncing' state when the user is not authenticated and backend calls will be rejected; ensure the SOS status messaging is accurate in guest mode.",
+      "reqIds": [
+        "REQ-17"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-fix-bluetooth-sos-sharing-so-it-no-longer-implies-successful-phone-to-phone-delivery-when-it-cannot-send-and-provide-a-working-in-app-bluetooth-relay-flow-using-the-existing-bluetooth-relay-feature-connect-send-with-clear-errors-when-unsupported-unconnected",
+      "title": "Fix Bluetooth SOS sharing so it no longer implies successful phone-to-phone delivery when it cannot send, and provide a working in-app Bluetooth relay flow using the existing Bluetooth Relay feature (connect + send) with clear errors when unsupported/unconnected.",
+      "reqIds": [
+        "REQ-18"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-update-the-sos-bluetooth-share-flow-so-an-sos-message-can-be-sent-over-bluetooth-even-when-the-sos-has-not-been-synced-to-the-backend-no-backendid-including-in-guest-mode-and-ensure-the-outgoing-message-text-is-fully-in-english",
+      "title": "Update the SOS Bluetooth share flow so an SOS message can be sent over Bluetooth even when the SOS has not been synced to the backend (no backendId), including in guest mode, and ensure the outgoing message text is fully in English.",
+      "reqIds": [
+        "REQ-19"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-improve-the-bluetooth-relay-connection-and-error-ux-so-that-when-bluetooth-cannot-connect-between-two-phones-the-app-clearly-explains-why-and-what-the-user-can-do-next-instead-of-failing-with-a-generic-error",
+      "title": "Improve the Bluetooth Relay connection and error UX so that when Bluetooth cannot connect between two phones, the app clearly explains why and what the user can do next, instead of failing with a generic error.",
+      "reqIds": [
+        "REQ-20"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-add-a-simple-bluetooth-test-message-helper-in-the-bluetooth-relay-screen-that-lets-a-user-quickly-verify-the-connection-by-sending-a-predefined-english-test-payload-and-seeing-it-appear-in-the-message-log",
+      "title": "Add a simple “Bluetooth test message” helper in the Bluetooth Relay screen that lets a user quickly verify the connection by sending a predefined English test payload and seeing it appear in the message log.",
+      "reqIds": [
+        "REQ-21"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-attach-the-existing-crash-impact-detection-ui-so-it-is-always-active-when-enabled-render-the-existing-crashpromptdialog-globally-e-g-inside-the-app-shell-layout-so-a-detected-impact-can-actually-open-the-prompt-from-any-page",
+      "title": "Attach the existing crash/impact detection UI so it is always active when enabled: render the existing `CrashPromptDialog` globally (e.g., inside the app shell/layout) so a detected impact can actually open the prompt from any page.",
+      "reqIds": [
+        "REQ-22"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-correct-the-crash-detection-implementation-to-behave-reliably-and-not-spam-trigger-update-usecrashdetection-to-a-only-listen-when-crash-detection-is-enabled-and-motion-permission-is-granted-available-b-reduce-false-positives-by-using-a-short-confirmation-window-e-g-require-threshold-exceedance-across-multiple-samples-or-apply-simple-smoothing-and-c-add-a-cooldown-so-oncrashdetected-cannot-fire-repeatedly-in-rapid-succession-while-the-device-is-still-moving",
+      "title": "Correct the crash detection implementation to behave reliably and not spam-trigger: update `useCrashDetection` to (a) only listen when crash detection is enabled and motion permission is granted/available, (b) reduce false positives by using a short confirmation window (e.g., require threshold exceedance across multiple samples or apply simple smoothing), and (c) add a cooldown so `onCrashDetected()` cannot fire repeatedly in rapid succession while the device is still moving.",
+      "reqIds": [
+        "REQ-23"
+      ],
+      "version": 1
+    },
+    {
+      "id": "feature-expose-crash-detection-sensitivity-control-in-settings-so-users-can-tune-the-crash-threshold-that-usecrashdetection-already-consumes-settings-crashthreshold-include-clear-english-helper-text-and-a-safe-default-range",
+      "title": "Expose crash detection sensitivity control in Settings so users can tune the crash threshold that `useCrashDetection` already consumes (`settings.crashThreshold`). Include clear English helper text and a safe default range.",
+      "reqIds": [
+        "REQ-24"
+      ],
+      "version": 1
+    }
+  ],
+  "new_feature_requests": [
+    {
+      "id": "AR-1",
+      "summary": "Offline-first SOS mobile app with mesh networking capability for low/no-signal areas",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-2",
+      "summary": "Real-time hazard and fatigue detection using phone sensors (GPS, accelerometer)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-3",
+      "summary": "Peer-to-peer emergency alert sharing over Bluetooth/Wi‑Fi Direct within ~1 km radius",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-4",
+      "summary": "Auto-escalate emergencies to family/authorities and provide breadcrumb location tracking",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-5",
+      "summary": "Crowdsourced hazard reporting/data to improve rider safety ecosystem",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-12",
+      "summary": "Backend: add Motoko canister data models and APIs to store and retrieve (a) SOS events, (b) breadcrumb points associated to SOS events, (c) hazard reports, and (d) optional rider profiles/handles; ensure stable storage compatibility for future upgrades (only add migration.mo if/when persistent schema changes are introduced beyond initial state).",
+      "reqIds": [
+        "REQ-7"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-13",
+      "summary": "Stabilize the app so all existing functions work end-to-end (fix broken flows, ensure SOS/hazard/breadcrumb/offline queue and sync operate correctly)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-15",
+      "summary": "Correct backend SOS and hazard APIs so they return data consistent with what the frontend expects and with the app’s stated features (status handling and hazard “nearby” filtering).",
+      "reqIds": [
+        "REQ-12"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "AR-16",
+      "summary": "Provide an installable Android APK build/distribution option for the app (e.g., package the PWA as an APK)",
+      "reqIds": [],
+      "status": "pending"
+    },
+    {
+      "id": "AR-17",
+      "summary": "Add/enable a crash (impact) detection feature and correct its current implementation so it works reliably using available phone motion sensors.",
+      "reqIds": [],
+      "status": "pending"
+    }
+  ],
+  "gameProjectType": "none",
+  "projectName": "Gig Rider SOS Mesh Network",
+  "clarification_mode": "instant",
+  "clarification_rounds": 0
+}

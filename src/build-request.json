@@ -1,0 +1,76 @@
+{
+  "kind": "build_request",
+  "title": "Attach and fix crash (impact) detection feature",
+  "priority": "normal",
+  "requirements": [
+    {
+      "id": "REQ-22",
+      "text": "Attach the existing crash/impact detection UI so it is always active when enabled: render the existing `CrashPromptDialog` globally (e.g., inside the app shell/layout) so a detected impact can actually open the prompt from any page.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "attach feature for crash detection and correct the implementaion"
+        ]
+      },
+      "acceptanceCriteria": [
+        "With Crash Detection enabled in Settings and motion permission granted, a simulated/high-acceleration devicemotion event causes the 'Possible Impact Detected' dialog to appear without requiring navigation to a specific page.",
+        "The crash prompt can appear while the user is on Home, Hazards, Contacts, or Settings pages.",
+        "If Crash Detection is disabled, no crash prompt appears even when devicemotion events fire."
+      ]
+    },
+    {
+      "id": "REQ-23",
+      "text": "Correct the crash detection implementation to behave reliably and not spam-trigger: update `useCrashDetection` to (a) only listen when crash detection is enabled and motion permission is granted/available, (b) reduce false positives by using a short confirmation window (e.g., require threshold exceedance across multiple samples or apply simple smoothing), and (c) add a cooldown so `onCrashDetected()` cannot fire repeatedly in rapid succession while the device is still moving.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "attach feature for crash detection and correct the implementaion"
+        ]
+      },
+      "acceptanceCriteria": [
+        "On devices/browsers where motion permission is required but not granted, crash detection does not start listening and does not trigger prompts.",
+        "When a crash event is detected and the dialog opens, additional devicemotion spikes during the next cooldown period do not open additional dialogs or re-trigger the callback.",
+        "Normal riding-like bumps/shakes do not continuously open the crash prompt under default settings; triggering requires a clear threshold exceedance pattern.",
+        "Crash detection continues to work after dismissing the dialog ('I'm OK') and can trigger again after the cooldown has elapsed."
+      ]
+    },
+    {
+      "id": "REQ-24",
+      "text": "Expose crash detection sensitivity control in Settings so users can tune the crash threshold that `useCrashDetection` already consumes (`settings.crashThreshold`). Include clear English helper text and a safe default range.",
+      "target": "frontend",
+      "source": {
+        "messageIds": [
+          "msg-4"
+        ],
+        "quotes": [
+          "attach feature for crash detection and correct the implementaion"
+        ]
+      },
+      "acceptanceCriteria": [
+        "Settings includes a control to view and adjust the crash threshold used for detection (persisted via the existing settings store).",
+        "Changing the threshold immediately affects subsequent crash detection behavior without requiring a page refresh.",
+        "All user-facing labels and helper text related to crash threshold are in English."
+      ]
+    }
+  ],
+  "constraints": [
+    "Do not edit files under frontend/src/components/ui (Shadcn components are read-only and must be composed).",
+    "Do not modify immutable paths listed in SYSTEM_CONTEXT (e.g., frontend/src/hooks/useInternetIdentity.ts(x), frontend/src/hooks/useActor.ts, frontend/src/main.tsx).",
+    "Keep backend as single-actor Motoko architecture; only add migration.mo if persistent schema changes are introduced (not expected for this request)."
+  ],
+  "nonGoals": [
+    "Implementing server-side crash detection or storing crash events in the backend.",
+    "Adding new third-party sensor/analytics SDKs.",
+    "Changing the SOS lifecycle, Bluetooth relay behavior, or offline queue logic beyond what is necessary to make crash detection prompt and sensitivity work correctly."
+  ],
+  "imageRequirements": {
+    "required": [],
+    "edits": []
+  }
+}
